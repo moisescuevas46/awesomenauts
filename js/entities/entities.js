@@ -13,6 +13,7 @@ game.PlayerEntity = me.Entity.extend({
 
 			this.body.setVelocity(5, 20);
 			this.facing = "right";
+			this.now = newDate().getTime();
 			me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
 
 			this.renderable.addAnimation("idle",[78]);
@@ -190,6 +191,9 @@ game.EnemyBaseEntity = me.Entity.extend({
 
 	onColission: function (delta){
 		
-	}
+	},
+loseHealth: function(){
+	this.health--;
+}
 
 });
