@@ -12,12 +12,12 @@ game.PlayerEntity = me.Entity.extend({
 			}]);
 
 			this.body.setVelocity(5, 20);
+			this.facing = "right";
 			me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
 
 			this.renderable.addAnimation("idle",[78]);
 			this.renderable.addAnimation("walk", [117,118,119,120,121,122,123,124]),80;
-			this.renderable.addAnimation("attack", [65,66,67,68,69,70,71,72], 80)
-
+			this.renderable.addAnimation("attack", [65,66,67,68,69,70,71,72],80);
 			this.renderable.setCurrentAnimation("idle");
 
 	},
@@ -28,32 +28,38 @@ game.PlayerEntity = me.Entity.extend({
 //makes it so that when the right key is pressed it makes the player go right
 				this.body.vel.x += this.body.accel.x * me.timer.tick;
 					this.flipX(true); 
-
-			//	this.renderable.setCurrentAnimation("walk");
+					this.facing = "right"
+				this.renderable.setCurrentAnimation("walk");
 			}
 
 			else if(me.input.isKeyPressed("left")){
-				this.body.vel.x -= this.body.accel.x * me.timer.tick;
-				this.flipx(false);
+				this.body.vel.x -=this.body.accel.x * me.timer.tick;
+				this.facing = "left";
+				this.flipX(false);
 			}
 				//sets the position of my x by adding the velocity defined above in
 				//setVelocity() and multiplying it by me.timer.tick.
 				//me.timer.tick makes the movement look smooth
 			
-				if(me.input.isKeyPressed("attack")){
-					if(!this.renderable.isCurrentAnimation("attack")){
-						//Sets the current animation to attack and when thats over it goes back to teh idle animation
-						this.renderable.setCurrentAnimation("attack", "idle");
-						this.renderable.setAnimationFreame();
-					}
-				}
-
 			else
 			{
 				this.body.vel.x = 0;
 			}
 
-			if(!this.body.vel.x !=0){
+			if(me.input.isKeyPressed("jump") && !this.jumping && !this.falling){
+				this.body.jumping = true;
+				this.body.vel.y -= this.body.accel.y * me.timer.tick;
+			}
+
+			if(me.input.isKeyPressed("attack")){
+				if (!this.renderable.isCurrentAnimation("attack")) {
+					this.renderable.setCurrentAnimation("attack","idle");
+					this.renderable.setAnimationFrame();
+				}
+			}
+			
+
+			else if(!this.body.vel.x !==0){
 			if(!this.renderable.isCurrentAnimation("walk")){
 				this.renderable.setCurrentAnimation("walk");
 			}
@@ -63,11 +69,36 @@ game.PlayerEntity = me.Entity.extend({
 			this.renderable.setCurrentAnimation("idle");
 		}
 
+		if(me.input.isKeyPressed("attack")){
+				if (!this.renderable.isCurrentAnimation("attack")) {
+					this.renderable.setCurrentAnimation("attack","idle");
+					this.renderable.setAnimationFrame();
+				}
+			}
+
+			me.collision.check(this, true, this.collideHandler.bind(this), true);
+
 			this.body.update(delta);
 
 			this._super(me.Entity, "update", [delta]);
 			return true;
+	},
+
+	collideHandler: function(response){
+		if(response.b.type=== 'EnemyBaseEntity'){
+			var ydif = this.pos.y = response.b.pos.y;
+			var xdif = this.pos.x -response.b.pos.x;
+
+			if(xdif>-35 && this.facing==="right" && (xdif<0)) {
+				this.body.vel.x = 0;
+				this.pos.x = this.pos.x -1;
+			}else if(xdif<70 && this.facing==="left" && xdif>0){
+				this.body.vel.x = 0;
+				this.pos.x = this.pos.x +1;
+			}
+		}
 	}
+
 	});
 
 game.PlayerBaseEntity = me.Entity.extend({
@@ -80,7 +111,7 @@ game.PlayerBaseEntity = me.Entity.extend({
 			spriteheight: "100",
 
 			getShape: function(){
-				return (new me.Rect(0, 0, 100 ,100)).toPolygon();
+				return (new me.Rect(0, 0, 100,70)).toPolygon();
 			}
 
 		}]);
@@ -128,7 +159,7 @@ game.EnemyBaseEntity = me.Entity.extend({
 			spritewidth : "100",
 			spriteheight: "100",
 			getShape: function(){
-				return (new me.Rect(0, 0, 100 ,100)).toPolygon();
+				return (new me.Rect(0, 0, 100 ,70)).toPolygon();
 			}
 
 		}]);
