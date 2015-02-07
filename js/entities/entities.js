@@ -99,7 +99,7 @@ game.PlayerEntity = me.Entity.extend({
 				this.pos.x = this.pos.x +1;
 			}
 
-			if(this.renderable.isCurrentAnimation("attack")&& this.now-this.lastHit >=400){
+			if(this.renderable.isCurrentAnimation("attack")&& this.now-this.lastHit >=1000){
 				this.lastHit = this.now;
 				response.b.loseHealth();
 			}
@@ -179,8 +179,8 @@ game.EnemyBaseEntity = me.Entity.extend({
 		this.type = "EnemyBaseEntity";
 
 		this.renderable.addAnimation("idle", [0]);
-		this.renderable.addAnimation("broke");
-		this.renderable.setCurrentAnimation("idle");
+		this.renderable.addAnimation("broken");
+		this.renderable.setCurrentAnimation("broken");
 	
 	},
 
@@ -189,17 +189,40 @@ game.EnemyBaseEntity = me.Entity.extend({
 			this.broken = true;
 			this.renderable.setCurrentAnimation("broken");
 		}
-
 		this.body.update(delta);
+
 		this._super(me.Entity, "update", [delta]);
 		return true;
 	},
 
-	onColission: function (delta){
+	onColission: function (){
 		
 	},
 	loseHealth: function(){
 	this.health--;
 	}
 
+});
+
+game.EnemyCreep = me.Entity.extend({
+	init: function (x,y,settings){
+this._super(me.Entity, 'init', [x,y, {
+	image: "fireball",
+	width:32,
+	height: 64,
+	spritewidth: "32",
+	spriteheight: "64",
+	getShape: function(){
+		return(new me.Rect(0, 0, 32, 64)).toPolygon();
+	}
+}])
+this.health = 10;
+this.alwaysUpdate = true;
+
+this.setVeloctiy(3,20);
+this.type = "EnemyCreep";
+
+this.renderable.addAnimation("walk",[0,1,2], 80 );
+this.renderable.setCurrentAnimation("walk");
+	},
 });
