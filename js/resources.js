@@ -8,7 +8,7 @@ game.resources = [
 	 {name: "meta-tiles", type:"image", src: "data/img/meta-tiles.png"},
 	 {name: "player", type:"image", src: "data/img/orcSpear.png"},
 	 {name: "tower", type:"image", src: "data/img/tower_round.svg.png"},
-	 {name: "fireball", type:"image", src: "data/img/fireball.png"},
+	 {name: "creep1", type:"image", src: "data/img/brainmonster.png"},
 
 	 // gets the images to load up ^
 
