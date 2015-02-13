@@ -133,7 +133,7 @@ game.PlayerBaseEntity = me.Entity.extend({
 		this.renderable.setCurrentAnimation;
 
 		this.renderable.addAnimation("idle", [0]);
-		this.renderable.addAnimation("broke");
+		this.renderable.addAnimation("broken");
 		this.renderable.setCurrentAnimation("idle");
 		//adds animations and sets animation
 
@@ -250,7 +250,7 @@ this.renderable.setCurrentAnimation("walk");
 			//this.lastAttacking=this.now;
 			this.body.vel.x = 0;
 			this.pos.x = this.pos.x + 1;
-			if((this.now-this.lastHit >= 1000)){
+			if((this.now - this.lastHit >= 1000)){
 				this.lastHit = this.now;
 				response.b.loseHealth(1);
 			}
