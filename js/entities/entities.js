@@ -128,7 +128,7 @@ game.PlayerBaseEntity = me.Entity.extend({
 		this.alwaysUpdate = true;
 		this.body.onColission = this.onColission.bind(this);
 
-		this.type = "PlayerBaseEntity";
+		this.type = "PlayerBase";
 		this.renderable.addAnimation("idle",[0]);
 		this.renderable.setCurrentAnimation;
 
@@ -148,6 +148,10 @@ game.PlayerBaseEntity = me.Entity.extend({
 		this.body.update(delta);
 		this._super(me.Entity, "update", [delta]);
 		return true;
+	},
+
+	loseHealth: function(damage){
+		this.health = this.health - damage;
 	},
 
 	onColission: function (delta){
@@ -220,6 +224,9 @@ this.health = 10;
 this.alwaysUpdate = true;
 //Lets us know if the enemy is curretly attacking.
 this.attacking = false;
+//Keep track ofwhen or creep last attacks.
+this.lastAttacking = new Date().getTime();
+this.lastHit = new Date().getTime();
 this.now = new Date().getTime();
 this.body.setVelocity(3,20);
 this.type = "EnemyCreep";
@@ -240,11 +247,11 @@ this.renderable.setCurrentAnimation("walk");
 	collideHandler: function(response){
 		if (response.b.type==='PlayerBase') {
 			this.attacking=true;
-			this.lastAttacking=this.now;
+			//this.lastAttacking=this.now;
 			this.body.vel.x = 0;
 			this.pos.x = this.pos.x + 1;
-			if((this.now-this.lastMit >= 1000)){
-				this.lastMit = this.now;
+			if((this.now-this.lastHit >= 1000)){
+				this.lastHit = this.now;
 				response.b.loseHealth(1);
 			}
 
