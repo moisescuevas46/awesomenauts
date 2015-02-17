@@ -12,7 +12,7 @@ game.PlayerEntity = me.Entity.extend({
 								}
 		}]);
 		this.type = "PlayerEntity";
-
+			this.health = 20;
 			this.body.setVelocity(5, 20);
 			this.facing = "right";
 			this.now = new Date().getTime();
@@ -261,11 +261,15 @@ this.renderable.setCurrentAnimation("walk");
 			}
 
 		}else if (response.b.type==='PlayerEntity'){
+			var xdif = this.pos.x - response.b.pos.x;
 			this.attacking=true;
 			//this.lastAttacking=this.now;
-			this.body.vel.x = 0;
+		if (xdif>0) {
 			this.pos.x = this.pos.x + 1;
-			if((this.now - this.lastHit >= 1000)){
+			this.body.vel.x = 0;
+
+		}
+			if((this.now - this.lastHit >= 1000) && xdif>0){
 				this.lastHit = this.now;
 				response.b.loseHealth(1);
 			}
