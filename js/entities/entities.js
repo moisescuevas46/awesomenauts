@@ -11,6 +11,7 @@ game.PlayerEntity = me.Entity.extend({
 				return(new me.Rect(0,0, 64, 64)).toPolygon();
 								}
 		}]);
+		this.type = "PlayerEntity";
 
 			this.body.setVelocity(5, 20);
 			this.facing = "right";
@@ -48,7 +49,7 @@ game.PlayerEntity = me.Entity.extend({
 				//sets the position of my x by adding the velocity defined above in
 				//setVelocity() and multiplying it by me.timer.tick.
 				//me.timer.tick makes the movement look smooth
-			
+	//		
 			else{
 				this.body.vel.x = 0;
 			}
@@ -81,11 +82,15 @@ game.PlayerEntity = me.Entity.extend({
 			this._super(me.Entity, "update", [delta]);
 			return true;
 		},
-			//////////////////////////////////////
+
+			loseHealth: function(damage){
+			this.health = this.health - damage;
+		},
+
 	collideHandler: function(response){
 		if(response.b.type=== 'EnemyBaseEntity'){
-			var ydif = this.pos.y = response.b.pos.y;
-			var xdif = this.pos.x -response.b.pos.x;
+			var ydif = this.pos.y - response.b.pos.y;
+			var xdif = this.pos.x - response.b.pos.x;
 			if(ydif<-40 && xdif<70 && xdif>-35){
 				this.body.falling = false;
 				this.body.vel.y = -1;
@@ -106,8 +111,8 @@ game.PlayerEntity = me.Entity.extend({
 		}
 	}
 
-	});
-//////////////////////
+});
+
 game.PlayerBaseEntity = me.Entity.extend({
 	init : function(x, y, settings){
 		this._super(me.Entity, 'init', [x,y,{
@@ -255,7 +260,16 @@ this.renderable.setCurrentAnimation("walk");
 				response.b.loseHealth(1);
 			}
 
-		};
+		}else if (response.b.type==='PlayerEntity'){
+			this.attacking=true;
+			//this.lastAttacking=this.now;
+			this.body.vel.x = 0;
+			this.pos.x = this.pos.x + 1;
+			if((this.now - this.lastHit >= 1000)){
+				this.lastHit = this.now;
+				response.b.loseHealth(1);
+			}
+		}
 	}
 });
 
