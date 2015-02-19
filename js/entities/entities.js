@@ -108,9 +108,12 @@ game.PlayerEntity = me.Entity.extend({
 				this.lastHit = this.now;
 				response.b.loseHealth();
 			}
+		}else if(response.b.type==='EnemyCreep'){
+			if(this.renderable.isCurrentAnimation("attack")){
+				response.b.loseHealth(1);
 		}
 	}
-
+}
 });
 
 game.PlayerBaseEntity = me.Entity.extend({
@@ -204,6 +207,7 @@ game.EnemyBaseEntity = me.Entity.extend({
 		return true;
 	},
 
+
 	onColission: function (){
 		
 	},
@@ -239,7 +243,15 @@ this.type = "EnemyCreep";
 this.renderable.addAnimation("walk",[3,4,5],80);
 this.renderable.setCurrentAnimation("walk");
 	},
+
+	loseHealth: function(damage){
+		this.health = this.health - damage;
+	},
+
 	update: function(delta){
+		if(this.health <= 0){
+			me.game.world.removeChild(this);
+		}
 		this.now = new Date().getTime();
 
 		this.body.vel.x -= this.body.accel.x * me.timer.tick;
@@ -271,6 +283,10 @@ this.renderable.setCurrentAnimation("walk");
 		}
 			if((this.now - this.lastHit >= 1000) && xdif>0){
 				this.lastHit = this.now;
+				response.b.loseHealth(1);
+			}
+		}else if(response.b.type==='EnemyCreep'){
+			if(this.renderable.isCurrentAnimation("attack")){
 				response.b.loseHealth(1);
 			}
 		}
