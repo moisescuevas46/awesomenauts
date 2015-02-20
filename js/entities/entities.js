@@ -12,11 +12,12 @@ game.PlayerEntity = me.Entity.extend({
 								}
 		}]);
 		this.type = "PlayerEntity";
-			this.health = 20;
-			this.body.setVelocity(5, 20);
+			this.health = game.data.playerHealth;
+			this.body.setVelocity(game.data.playerMoveSpeed, 20);
 			this.facing = "right";
 			this.now = new Date().getTime();
 			this.lastHit = this.now;
+			this.dead = false;
 			this.lastAttack = new Date().getTime();
 
 
@@ -32,6 +33,13 @@ game.PlayerEntity = me.Entity.extend({
 //////////////////////////
 	update:function(delta){
 		this.now = new Date().getTime();
+
+		if(this.health <= 0){
+			this.dead = true;
+			this.pos.x = 10;
+			this.pos.y = 0;
+			this.health = game.data.playerHealth;
+		}
 
 			if(me.input.isKeyPressed("right")){
 //makes it so that when the right key is pressed it makes the player go right
@@ -104,13 +112,13 @@ game.PlayerEntity = me.Entity.extend({
 				this.pos.x = this.pos.x +1;
 			}
 
-			if(this.renderable.isCurrentAnimation("attack")&& this.now-this.lastHit >=1000){
+			if(this.renderable.isCurrentAnimation("attack")&& this.now-this.lastHit >=game.data.playerAttackTimer){
 				this.lastHit = this.now;
-				response.b.loseHealth();
+				response.b.loseHealth(game.data.playerAttack);
 			}
 		}else if(response.b.type==='EnemyCreep'){
 			if(this.renderable.isCurrentAnimation("attack")){
-				response.b.loseHealth(1);
+				response.b.loseHealth(game.data.playerAttack);
 		}
 	}
 }
@@ -132,7 +140,7 @@ game.PlayerBaseEntity = me.Entity.extend({
 		}]);
 
 		this.broken = false;
-		this.health = 10;
+		this.health = game.data.playerBaseHealth;
 		this.alwaysUpdate = true;
 		this.body.onColission = this.onColission.bind(this);
 
@@ -184,7 +192,7 @@ game.EnemyBaseEntity = me.Entity.extend({
 
 		}]);
 		this.broken = false;
-		this.health = 10;
+		this.health = game.data.enemyBaseHealth;
 		this.alwaysUpdate = true;
 		this.body.onColission = this.onColission.bind(this);
 
@@ -229,7 +237,7 @@ this._super(me.Entity, 'init', [x,y, {
 		return(new me.Rect(0, 0, 32, 64)).toPolygon();
 	}
 }]);
-this.health = 10;
+this.health = game.data.enemyCreepHealth;
 this.alwaysUpdate = true;
 //Lets us know if the enemy is curretly attacking.
 this.attacking = false;
@@ -269,7 +277,7 @@ this.renderable.setCurrentAnimation("walk");
 			this.pos.x = this.pos.x + 1;
 			if((this.now - this.lastHit >= 1000)){
 				this.lastHit = this.now;
-				response.b.loseHealth(1);
+				response.b.loseHealth(game.data.enemyCreepAttack);
 			}
 
 		}else if (response.b.type==='PlayerEntity'){
@@ -283,11 +291,7 @@ this.renderable.setCurrentAnimation("walk");
 		}
 			if((this.now - this.lastHit >= 1000) && xdif>0){
 				this.lastHit = this.now;
-				response.b.loseHealth(1);
-			}
-		}else if(response.b.type==='EnemyCreep'){
-			if(this.renderable.isCurrentAnimation("attack")){
-				response.b.loseHealth(1);
+				response.b.loseHealth(game.data.enemyCreepAttack);
 			}
 		}
 	}

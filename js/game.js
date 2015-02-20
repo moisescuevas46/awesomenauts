@@ -5,9 +5,25 @@ var game = {
 	// an object where to store game information
 	data : {
 		// score
-		score : 0
+		score : 0,
+		enemyBaseHealth: 10,
+		playerBaseHealth: 10,
+		enemyCreepHealth: 10,
+		playerHealth: 10,
+		enemyCreepAttack: 1,
+		playerAttack: 1,
+		orcBaseDamage:10,
+		orcBaseSpeed: 3,
+		orcBaseDefense:0,
+		playerAttackTimer: 1000,
+		creepAttackTimer: 1000,
+		playerMoveSpeed: 7.5,
+		creepMoveSpeed: 9,
+		gameManager: "",
+		player: ""
 	},
-	
+	//These stats configure the game so player attack is the damage the player deals, etc..
+
 	
 	// Run on page load.
 	"onload" : function () {
