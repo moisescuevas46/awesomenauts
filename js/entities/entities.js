@@ -53,35 +53,10 @@ game.PlayerEntity = me.Entity.extend({
 	update:function(delta){
 		this.now = new Date().getTime();
 
-		if(this.health <= 0){
-			this.dead = true;
-		}
+		this.dead = checkIfDead();
 
-			if(me.input.isKeyPressed("right")){
-//makes it so that when the right key is pressed it makes the player go right
-				this.body.vel.x += this.body.accel.x * me.timer.tick;
-					this.flipX(true); 
-					this.facing = "right";
-				this.renderable.setCurrentAnimation("walk");
-			}
+		this.checkKeyPressesAndMove();
 
-			else if(me.input.isKeyPressed("left")){
-				   this.body.vel.x -=this.body.accel.x * me.timer.tick;
-				   this.facing = "left";
-				   this.flipX(false);
-				}
-				//sets the position of my x by adding the velocity defined above in
-				//setVelocity() and multiplying it by me.timer.tick.
-				//me.timer.tick makes the movement look smooth
-	//		
-			else{
-				this.body.vel.x = 0;
-			}
-
-			if(me.input.isKeyPressed("jump") && !this.jumping && !this.falling){
-				this.body.jumping = true;
-				this.body.vel.y -= this.body.accel.y * me.timer.tick;
-			}
 
 			if(me.input.isKeyPressed("attack")){
 				if (!this.renderable.isCurrentAnimation("attack")){
@@ -106,6 +81,45 @@ game.PlayerEntity = me.Entity.extend({
 			this._super(me.Entity, "update", [delta]);
 			return true;
 		},
+		checkifDead: function(){
+			if (this.health <= 0){
+				return true;
+			}
+			return false;
+		},
+
+		checkKeyPressesAndMove: function(){
+		if(me.input.isKeyPressed("right")){
+			this.moveRight();
+			else if(me.input.isKeyPressed("left")){
+				this.moveLeft();
+			}	
+			else{
+				this.body.vel.x = 0;
+			}
+
+			if(me.input.isKeyPressed("jump") && !
+			this.jump();
+			},
+
+		},
+
+			moveRight: function(){
+//makes it so that when the right key is pressed it makes the player go right
+				this.body.vel.x += this.body.accel.x * me.timer.tick;
+					this.facing = "right";
+					this.flipX(true); 
+
+			},
+			moveLeft: function(){
+
+			},
+			jump: function(){
+			this.jumping && !this.falling){
+			this.body.jumping = true;
+			this.body.vel.y -= this.body.accel.y * me.timer.tick;
+			},
+
 
 			loseHealth: function(damage){
 			this.health = this.health - damage;
