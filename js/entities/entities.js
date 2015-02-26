@@ -1,6 +1,17 @@
 game.PlayerEntity = me.Entity.extend({
 	init: function(x, y, settings){
-		
+		this.setSuper();
+		this.setPlayerTimers();
+		this.setAttributes();
+
+		this.type = "PlayerEntity";
+		this.setFlags();
+			me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
+
+			this.addAnimation();
+	},
+
+	setSuper: function(){
 		this._super(me.Entity,'init', [x, y, {
 			image: "player",
 			width:64,
@@ -9,21 +20,28 @@ game.PlayerEntity = me.Entity.extend({
 			spriteheight: "64",
 			getShape: function(){
 				return(new me.Rect(0,0, 64, 64)).toPolygon();
-								}
+			}
 		}]);
-		this.type = "PlayerEntity";
-			this.health = game.data.playerHealth;
-			this.body.setVelocity(game.data.playerMoveSpeed, 20);
-			this.facing = "right";
-			this.now = new Date().getTime();
-			this.lastHit = this.now;
-			this.dead = false;
-			this.attack = game.data.playerAttack;
-			this.lastAttack = new Date().getTime();
+	},
 
+	setPlayerTimers: function(){
+		this.now = new Date().getTime();
+		this.lastHit = this.now;
+		this.lastAttack = new Date().getTime();
+	},
 
-			me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
+	setAttributes: function(){
+	this.health = game.data.playerHealth;
+	this.body.setVelocity(game.data.playerMoveSpeed, 20);
+	this.attack = game.data.playerAttack;
 
+	},
+	setFlags: function(){
+	this.facing = "right";
+	this.dead = false;
+	},
+
+	addAnimation:function(){
 			this.renderable.addAnimation("idle",[78]);
 			this.renderable.addAnimation("walk", [117,118,119,120,121,122,123,124]),80;
 			this.renderable.addAnimation("attack", [65,66,67,68,69,70,71,72],80);
@@ -31,7 +49,7 @@ game.PlayerEntity = me.Entity.extend({
 			//sets the animations for the character.
 
 	},
-//////////////////////////
+
 	update:function(delta){
 		this.now = new Date().getTime();
 
