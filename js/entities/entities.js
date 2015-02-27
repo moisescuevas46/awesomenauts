@@ -7,7 +7,6 @@ game.PlayerEntity = me.Entity.extend({
 		this.type = "PlayerEntity";
 		this.setFlags();
 			me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
-
 			this.addAnimation();
 	},
 
@@ -39,6 +38,7 @@ game.PlayerEntity = me.Entity.extend({
 	setFlags: function(){
 	this.facing = "right";
 	this.dead = false;
+	this.attacking = false;
 	},
 
 	addAnimation:function(){
@@ -46,35 +46,14 @@ game.PlayerEntity = me.Entity.extend({
 			this.renderable.addAnimation("walk", [117,118,119,120,121,122,123,124]),80;
 			this.renderable.addAnimation("attack", [65,66,67,68,69,70,71,72],80);
 			this.renderable.setCurrentAnimation("idle");
-			//sets the animations for the character.
 
 	},
 
 	update:function(delta){
 		this.now = new Date().getTime();
-
 		this.dead = checkIfDead();
-
 		this.checkKeyPressesAndMove();
-
-
-			if(me.input.isKeyPressed("attack")){
-				if (!this.renderable.isCurrentAnimation("attack")){
-					this.renderable.setCurrentAnimation("attack","idle");
-					this.renderable.setAnimationFrame();
-				}
-			}
-			
-
-			else if(!this.body.vel.x !== 0 && !this.renderable.isCurrentAnimation("attack")){
-			if(!this.renderable.isCurrentAnimation("walk")){
-				this.renderable.setCurrentAnimation("walk");
-			}
-		}
-
-		else if(!this.renderable.isCurrentAnimation("attack")){
-				this.renderable.setCurrentAnimation("idle");
-			}
+		this.setAnimation();
 
 			me.collision.check(this, true, this.collideHandler.bind(this), true);
 			this.body.update(delta);
@@ -93,7 +72,8 @@ game.PlayerEntity = me.Entity.extend({
 			this.moveRight();
 			else if(me.input.isKeyPressed("left")){
 				this.moveLeft();
-			}	
+			}
+
 			else{
 				this.body.vel.x = 0;
 			}
@@ -101,7 +81,7 @@ game.PlayerEntity = me.Entity.extend({
 			if(me.input.isKeyPressed("jump") && !
 			this.jump();
 			},
-
+			this.attacking = me.input.isKeyPressed("attack");
 		},
 
 			moveRight: function(){
@@ -109,17 +89,34 @@ game.PlayerEntity = me.Entity.extend({
 				this.body.vel.x += this.body.accel.x * me.timer.tick;
 					this.facing = "right";
 					this.flipX(true); 
-
 			},
+
 			moveLeft: function(){
-
 			},
+
 			jump: function(){
 			this.jumping && !this.falling){
 			this.body.jumping = true;
 			this.body.vel.y -= this.body.accel.y * me.timer.tick;
 			},
 
+			setAnimation: function(){
+			if(this.attacking){
+				if (!this.renderable.isCurrentAnimation("attack")){
+					this.renderable.setCurrentAnimation("attack","idle");
+					this.renderable.setAnimationFrame();
+				}
+			}
+			else if(!this.body.vel.x !== 0 && !this.renderable.isCurrentAnimation("attack")){
+			if(!this.renderable.isCurrentAnimation("walk")){
+				this.renderable.setCurrentAnimation("walk");
+			}
+		}
+
+		else if(!this.renderable.isCurrentAnimation("attack")){
+				this.renderable.setCurrentAnimation("idle");
+			}
+			},
 
 			loseHealth: function(damage){
 			this.health = this.health - damage;
