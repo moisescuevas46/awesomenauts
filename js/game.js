@@ -10,8 +10,8 @@ var game = {
 		playerBaseHealth: 10,
 		enemyCreepHealth: 10,
 		playerHealth: 10,
-		enemyCreepAttack: 10,
-		playerAttack: 1,
+		enemyCreepAttack: 1,
+		playerAttack: 2,
 		orcBaseDamage:10,
 		orcBaseHealth: 100,
 		orcBaseSpeed: 3,
@@ -20,7 +20,8 @@ var game = {
 		creepAttackTimer: 1000,
 		playerMoveSpeed: 7.5,
 		creepMoveSpeed: 5,
-		gameManager: "",
+		gameTimerManager: "",
+		HeroDeathManager: "",
 		player: "",
 		exp: 0,
 		gold: 0,
@@ -28,6 +29,9 @@ var game = {
 		exp2: 0,
 		exp3: 0,
 		exp4: 0,
+		win: "",
+		pausePos: "",
+		buyscreen: ""
 	},
 	
 	//These stats configure the game so player attack is the damage the player deals, etc..
@@ -47,16 +51,16 @@ var game = {
 			me.plugin.register.defer(this, debugPanel, "debug");
 		});
 	}
+	 
+	me.save.add({exp: 0,exp1: 0,exp2: 0,exp3: 0,exp4: 0,});
 
+	me.state.SPENDEXP = 112;
 	// Initialize the audio.
 	me.audio.init("mp3,ogg");
-
 	// Set a callback to run when loading is complete.
 	me.loader.onload = this.loaded.bind(this);
-
 	// Load the resources.
 	me.loader.preload(game.resources);
-
 	// Initialize melonJS and display a loading screen.
 	me.state.change(me.state.LOADING);
 },
@@ -68,11 +72,15 @@ var game = {
 
 		me.pool.register("EnemyBase",game.EnemyBaseEntity);
 		me.pool.register("EnemyCreep", game.EnemyCreep, true);
-		me.pool.register("GameManager", game.GameManager);
+		me.pool.register("GameTimerManager", game.GameTimerManager);
+		me.pool.register("HeroDeathManager", game.HeroDeathManager);
+		me.pool.register("ExperienceManager", game.ExperienceManager);
+		me.pool.register("SpendGold",game.SpendGold);
 
 
 		me.state.set(me.state.MENU, new game.TitleScreen());
 		me.state.set(me.state.PLAY, new game.PlayScreen());
+		me.state.set(me.state.SPENDEXP, new game.SpendExp());
 
 		// Start the game.
 		me.state.change(me.state.MENU);
