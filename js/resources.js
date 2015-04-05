@@ -12,6 +12,8 @@ game.resources = [
 	 {name: "title-screen", type:"image", src: "data/img/title.png"},
 	 {name: "exp-screen", type:"image", src: "data/img/loadpic.png"},
  	 {name: "gold-screen", type:"image", src: "data/img/spend.png"},
+ 	 {name: "load-screen", type:"image", src: "data/img/loadpic.png"},
+ 	 {name: "new-screen", type:"image", src: "data/img/newpic.png"},
 
 
 	 // gets the images to load up ^
@@ -23,7 +25,8 @@ game.resources = [
 		
 	/* Maps. 
 	 * @example
-	 * {name: "example01", type: "tmx", src: "data/map/example01.tmx"},
+	 * {name: "example01", ty
+	 pe: "tmx", src: "data/map/example01.tmx"},
 	 * {name: "example01", type: "tmx", src: "data/map/example01.json"},
  	 */
 
