@@ -7,7 +7,7 @@ game.SpendExp = me.ScreenObject.extend({
 		me.input.bindKey(me.input.KEY.F4, "F4");
 		me.input.bindKey(me.input.KEY.F5, "F5");
 		
-		var exp1cost = ((game.data.exp + 1) * 10);
+		var exp1cost = (Number(game.data.exp + 1) * 10);
 		me.game.world.addChild (new (me.Renderable.extend({
 			init: function(){
 				this._super(me.Renderable, 'init', [10, 10, 300, 50]);

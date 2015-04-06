@@ -11,8 +11,6 @@
     $hashedPassword = crypt($password, $salt);
     // Created a query and it will insert into the table called users
     $query = $_SESSION["connection"]->query("INSERT INTO users SET "
-            // Sets Email to Email variable
-            //. "email = '$email',"
             // Sets Username to Username variable
             . "username = '$username',"
             // Sets Password to the hashedPassword variable
@@ -21,17 +19,21 @@
             . "salt = '$salt',"
             //Sets exp to 0
             . "exp = 0, "
+
             . "exp1 = 0, "
+            
             . "exp2 = 0, "
+            
             . "exp3 = 0, "
-            . "exp4 = 0, ");
+            
+            . "exp4 = 0 ");
 
     $_SESSION["name"] = $username;
     // Checks if the Query is successful
     if ($query) {
         //need this for ajax
         // Echoes out success if successful
-        echo "True";
+        echo "true";
     }
     else {
         // If not successful, it will display the error preventing success
