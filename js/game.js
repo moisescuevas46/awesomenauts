@@ -41,7 +41,9 @@ var game = {
 		win: "",
 		pausePos: "",
 		buyscreen: "",
-		buytext: ""
+		buytext: "",
+		minimap:"",
+		miniPlayer:""
 	},
 	
 	//These stats configure the game so player attack is the damage the player deals, etc..
@@ -88,6 +90,8 @@ var game = {
 		me.pool.register("ExperienceManager", game.ExperienceManager);
 		me.pool.register("SpendGold",game.SpendGold);
 		me.pool.register("spear",game.SpearThrow);
+		me.pool.register("minimap",game.MiniMap, true);
+		me.pool.register("miniplayer",game.MiniPlayerLocation, true);
 
 
 		me.state.set(me.state.MENU, new game.TitleScreen());
