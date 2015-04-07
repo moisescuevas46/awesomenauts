@@ -6,6 +6,8 @@ var game = {
 	data : {
 		// score
 		score : 0,
+		option1:"",
+		option2:"",
 		enemyBaseHealth: 10,
 		playerBaseHealth: 10,
 		enemyCreepHealth: 10,
@@ -21,7 +23,8 @@ var game = {
 		playerMoveSpeed: 7.5,
 		creepMoveSpeed: 5,
 		gameTimerManager: "",
-		HeroDeathManager: "",
+		heroDeathManager: "",
+		spearTimer:15,
 		player: "",
 		exp: 0,
 		gold: 0,
@@ -47,7 +50,7 @@ var game = {
 	// Run on page load.
 	"onload" : function () {
 	// Initialize the video.
-	if (!me.video.init("screen",  me.video.CANVAS, 1067, 600, true, 'auto')) {
+	if (!me.video.init("screen",  me.video.CANVAS, 1067, 600, true, '1.0')) {
 		alert("Your browser does not support HTML5 canvas.");
 		return;
 	}
@@ -84,6 +87,7 @@ var game = {
 		me.pool.register("HeroDeathManager", game.HeroDeathManager);
 		me.pool.register("ExperienceManager", game.ExperienceManager);
 		me.pool.register("SpendGold",game.SpendGold);
+		me.pool.register("spear",game.SpearThrow);
 
 
 		me.state.set(me.state.MENU, new game.TitleScreen());
