@@ -57,9 +57,9 @@ game.SpendGold = Object.extend({
 					this.font.draw(renderer.getContext(),"Skill 1: Increase Damage. Current Level: " + game.data.skill1 + " Cost:" + ((game.data.skill1+1)*10), this.pos.x, this.pos.y + 40);
 					this.font.draw(renderer.getContext(),"Skill 2: Run Faster Current Level: " + game.data.skill2 + " Cost:" + ((game.data.skill2+1)*10), this.pos.x, this.pos.y + 80);
 					this.font.draw(renderer.getContext(),"Skill 3: Increase Health Current Level:0" + game.data.skill3 + " Cost:" + ((game.data.skill3+1)*10), this.pos.x, this.pos.y + 120);
-					this.font.draw(renderer.getContext(),"Q Ability: Speed Burst Current Level:0" + game.data.ability4 + " Cost:" + ((game.data.ability4+1)*10), this.pos.x, this.pos.y + 160);
-					this.font.draw(renderer.getContext(),"W Ability Eat Your Creep For Health Level:0" + game.data.ability5 + " Cost:" + ((game.data.ability5+1)*10), this.pos.x, this.pos.y + 200);
-					this.font.draw(renderer.getContext(),"E Ability: Throw Your Spear Level:0" + game.data.ability6 + " Cost:" + ((game.data.ability6+1)*10), this.pos.x, this.pos.y + 240);
+					this.font.draw(renderer.getContext(),"Q Ability: Speed Burst Current Level:0" + game.data.ability1 + " Cost:" + ((game.data.ability1+1)*10), this.pos.x, this.pos.y + 160);
+					this.font.draw(renderer.getContext(),"W Ability Eat Your Creep For Health Level:0" + game.data.ability2 + " Cost:" + ((game.data.ability2+1)*10), this.pos.x, this.pos.y + 200);
+					this.font.draw(renderer.getContext(),"E Ability: Throw Your Spear Level:0" + game.data.ability3 + " Cost:" + ((game.data.ability3+1)*10), this.pos.x, this.pos.y + 240);
 				}
 			}));
 		me.game.world.addChild(game.data.buytext,35);
@@ -117,11 +117,11 @@ game.SpendGold = Object.extend({
 			return true;
 		}else if(skill===3 && (game.data.gold >= ((game.data.skill3+3)*10))){
 			return true;
-		}else if(skill===4 && (game.data.gold >= ((game.data.ability1+4)*10))){
+		}else if(ability===1 && (game.data.gold >= ((game.data.ability1+4)*10))){
 			return true;
-		}else if(skill===5 && (game.data.gold >= ((game.data.ability2+5)*10))){
+		}else if(ability===2 && (game.data.gold >= ((game.data.ability2+5)*10))){
 			return true;
-		}else if(skill===6 && (game.data.gold >= ((game.data.ability3+6)*10))){
+		}else if(ability===3 && (game.data.gold >= ((game.data.ability3+6)*10))){
 			return true;
 		}else{
 			return false;
@@ -134,18 +134,18 @@ game.SpendGold = Object.extend({
 		game.data.skill1 += 1;
 		game.data.playerAttack += 1;
 	}else if (skill === 2){
-		game.data.gold -= ((game.data.skill1 + 1)*10);
+		game.data.gold -= ((game.data.skill2 + 1)*10);
 		game.data.skill2 += 1;
 	}else if (skill === 3){
-		game.data.gold -= ((game.data.skill1 + 1)*10);
+		game.data.gold -= ((game.data.skill3 + 1)*10);
 		game.data.skill3 += 1;
-	}else if (skill === 4){
+	}else if (ability === 1){
 		game.data.gold -= ((game.data.ability1 + 1)*10);
 		game.data.ability1 += 1;
-	}else if (skill === 5){
+	}else if (ability === 2){
 		game.data.gold -= ((game.data.ability2 + 1)*10);
 		game.data.ability2 += 1;
-	}else if (skill === 6){
+	}else if (ability === 3){
 		game.data.gold -= ((game.data.ability3 + 1)*10);
 		game.data.ability3 += 1;
 	}
